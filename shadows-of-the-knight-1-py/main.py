@@ -26,7 +26,7 @@ while True:
     if d1 == 'R' or d2 == 'R':
         x_min =  x + 1
     if d1 == 'L' or d2 == 'L':
-        x_min = x - 1
+        x_max = x - 1
     if d1 == 'U':
         y_max = y - 1
     if d1 == 'D':
