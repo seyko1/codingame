@@ -1,59 +1,84 @@
-/**
- * Auto-generated code below aims at helping you parse
- * the standard input according to the problem statement.
- **/
+interface Player {
+    // inventaire total
+    plum: number;
+    lemon: number;
+    apple: number;
+    banana: number;
 
-var inputs: string[] = readline().split(' ');
-const width: number = parseInt(inputs[0]);
-const height: number = parseInt(inputs[1]);
-for (let i = 0; i < height; i++) {
-    const line: string = readline();
+    trolls: Troll[];
 }
 
-// game loop
+interface Troll {
+    id: number;
+    x: number;
+    y: number;
+    movementSpeed: number; // 1
+    carryCapacity: number; // 1
+    harvestPower: number; // 1
+    // chopPower: number;
+    carryPlum: number;
+    carryLemon: number;
+    carryApple: number;
+    carryBanana: number;
+}
+
+type TreeType = 'PLUM | LEMON | APPLE | BANANA';
+interface Tree {
+    type: TreeType;
+    x: number;
+    y: number;
+    size: number; // 0 à 4
+    health: number; // 0 à 4
+    fruits: number;
+    cooldown: number; // délai recharge
+}
+
+const [width, height] = readline().split(' ').map(Number);
+
+const grid: string[][] = [];
+for (let i = 0; i < height; i++) {
+    grid.push(readline().split(''));
+}
+console.error('grid', grid)
+
 while (true) {
+    const players: Player[] = [];
     for (let i = 0; i < 2; i++) {
-        var inputs: string[] = readline().split(' ');
-        const plum: number = parseInt(inputs[0]);
-        const lemon: number = parseInt(inputs[1]);
-        const apple: number = parseInt(inputs[2]);
-        const banana: number = parseInt(inputs[3]);
-        const iron: number = parseInt(inputs[4]);
-        const wood: number = parseInt(inputs[5]);
+        const [plum, lemon, apple, banana] = readline().split(' ').map(Number);
+        players.push({ plum, lemon, apple, banana, trolls: [] });
     }
+    const trees: Tree[] = [];
     const treesCount: number = parseInt(readline());
+    console.error('treesCount', treesCount);
     for (let i = 0; i < treesCount; i++) {
-        var inputs: string[] = readline().split(' ');
-        const type: string = inputs[0];
-        const x: number = parseInt(inputs[1]);
-        const y: number = parseInt(inputs[2]);
-        const size: number = parseInt(inputs[3]);
-        const health: number = parseInt(inputs[4]);
-        const fruits: number = parseInt(inputs[5]);
-        const cooldown: number = parseInt(inputs[6]);
+        const [type, x, y, size, health, fruits, cooldown] = readline().split(' ');
+        trees.push({
+            type: type as TreeType,
+            x: Number(x),
+            y: Number(y),
+            size: Number(size),
+            health: Number(health),
+            fruits: Number(fruits),
+            cooldown: Number(cooldown),
+        });
     }
+    console.error('trees', trees);
+    
     const trollsCount: number = parseInt(readline());
+    console.error('trollsCount', trollsCount);
+    
     for (let i = 0; i < trollsCount; i++) {
-        var inputs: string[] = readline().split(' ');
-        const id: number = parseInt(inputs[0]);
-        const player: number = parseInt(inputs[1]);
-        const x: number = parseInt(inputs[2]);
-        const y: number = parseInt(inputs[3]);
-        const movementSpeed: number = parseInt(inputs[4]);
-        const carryCapacity: number = parseInt(inputs[5]);
-        const harvestPower: number = parseInt(inputs[6]);
-        const chopPower: number = parseInt(inputs[7]);
-        const carryPlum: number = parseInt(inputs[8]);
-        const carryLemon: number = parseInt(inputs[9]);
-        const carryApple: number = parseInt(inputs[10]);
-        const carryBanana: number = parseInt(inputs[11]);
-        const carryIron: number = parseInt(inputs[12]);
-        const carryWood: number = parseInt(inputs[13]);
+        const [
+            id, player, x, y, movementSpeed, carryCapacity, harvestPower, chopPower,
+            carryPlum, carryLemon, carryApple, carryBanana
+        ] = readline().split(' ').map(Number);
+        
+        players[player].trolls.push({
+            id, x, y, movementSpeed, carryCapacity, harvestPower,
+            carryPlum, carryLemon, carryApple, carryBanana
+        });
     }
-
-    // Write an action using console.log()
-    // To debug: console.error('Debug messages...');
-
+    console.error('players', JSON.stringify(players));
 
     // valid actions:
     // MOVE <id> <x> <y>
